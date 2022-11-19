@@ -7,7 +7,7 @@ from bson import json_util, ObjectId
 
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://mongo:mongo@localhost:27017/local?authSource=admin"
+app.config["MONGO_URI"] = "mongodb://mongo:mongo@mongo:27017/local?authSource=admin"
 
 mongo = PyMongo(app)
 
