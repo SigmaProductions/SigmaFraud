@@ -5,6 +5,8 @@ import string
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
+from tweet import Tweet
+
 class BagOfWords():
     def __init__(self) -> None:
         self.vectorizer = None
@@ -28,10 +30,10 @@ class BagOfWords():
         punctuationfree="".join([i for i in text if i not in string.punctuation])
         return punctuationfree
 
-    def is_scammy_text(self, tweeter_text: str) -> bool:
-        tweeter_text = self._remove_punctuation(tweeter_text)
-        tweeter_text = tweeter_text.lower()
-        vector_tweet_input = self.vectorizer.transform([tweeter_text])
+    def is_scammy_text(self, tweet: Tweet) -> bool:
+        tweet.text = self._remove_punctuation(tweet.text)
+        tweet.text = tweet.text.lower()
+        vector_tweet_input = self.vectorizer.transform([tweet.text])
 
         result = self.classifier.predict(vector_tweet_input)
         if result > 0.5:
