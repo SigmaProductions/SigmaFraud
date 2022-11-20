@@ -3,16 +3,23 @@ from azure.cognitiveservices.vision.computervision.models import OperationStatus
 from azure.cognitiveservices.vision.computervision.models import VisualFeatureTypes
 from msrest.authentication import CognitiveServicesCredentials
 import time
-import os
 import numpy as np
 
 from tweet import Tweet
 
 class Ocr():
     def __init__(self) -> None:
-        self.key = ''
+        self.key = '196c8cea10f848f7adc62fe68f94efb1'
         self.endpoint="https://sigmafraudvision.cognitiveservices.azure.com/"
         self.computervision_client = ComputerVisionClient(self.endpoint, CognitiveServicesCredentials(self.key))
+
+    def brand(self, image_url):
+        image_features = ["brands"]
+        cv_results=self.computervision_client.analyze_image(image_url, image_features)
+        result=[]
+        for brand in cv_results.brands:
+            result.append(brand.name)
+        return result
 
 
     def _ocr(self, image_url):
@@ -41,3 +48,5 @@ class Ocr():
                         tweet.ocr_info['text'] = line.text
 
 
+url="https://learn.microsoft.com/en-gb/azure/cognitive-services/computer-vision/images/red-shirt-logo.jpg"
+print(Ocr.brand(url))
