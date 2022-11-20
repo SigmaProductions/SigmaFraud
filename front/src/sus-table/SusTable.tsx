@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
+import { FaCheckCircle, FaSkullCrossbones } from "react-icons/fa";
 import styled from "styled-components";
 import { Report } from "../models/Report";
 import SusModal from "./sus-modal/SusModal";
@@ -26,7 +27,7 @@ export default function SusTable({
     word-wrap: ;
   `;
   const SusMarker = styled.td`
-    font-size: 2rem;
+    text-align: center;
   `;
 
   return (
@@ -36,7 +37,7 @@ export default function SusTable({
           <tr>
             <th>Source</th>
             <th>Text</th>
-            <th>Is sus</th>
+            <th>Classification</th>
           </tr>
         </thead>
         <tbody>
@@ -46,10 +47,8 @@ export default function SusTable({
                 <td>{r.source}</td>
                 <ReportText>{r.text}</ReportText>
                 <SusMarker>
-                  {r.state === "sus"
-                    ? "ඞ"
-                    : data.filter((r) => r.state === "sus").length +
-                      " Impostor remains "}
+                  {r.state === "sus" && <FaSkullCrossbones />}
+                  {r.state === "non-sus" && <FaCheckCircle />}
                 </SusMarker>
               </tr>
             );

@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card, Modal, ProgressBar } from "react-bootstrap";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import styled from "styled-components";
 import { Report } from "../../models/Report";
 import UserOtherSuses from "./UserOtherSuses";
@@ -69,10 +70,12 @@ export default function SusModal(props: {
     min-height: 300px;
     align-self: start;
   `;
-
+  const Phrases = styled.span`
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  `;
   const markReport = (sus: boolean) => props.onClose(sus);
-  const url =
-    "https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350";
 
   return (
     <Modal
@@ -90,7 +93,9 @@ export default function SusModal(props: {
             <UserName>{props.report?.authorName} </UserName>
             <UserId>#{props.report?.authorId}</UserId>
           </UserBar>
-          <ReportMediaContent src={url} alt="avatar" />
+          {props.report?.mediaUrl && (
+            <ReportMediaContent src={props.report?.mediaUrl} alt="avatar" />
+          )}
           <ReportContent>{props.report?.text}</ReportContent>
         </ReportWrapper>
 
@@ -104,10 +109,16 @@ export default function SusModal(props: {
         </OtherSusesCard>
 
         <StatsWrapper>
-          Wynik testu słów:
-          <ProgressBar now={60} label={`${60}%`} />
-          Wynik fraz:
-          <ProgressBar now={60} label={`${60}%`} />
+          Wynik klasyfikatora słów:
+          <ProgressBar
+            now={props.report?.textClassifier}
+            label={`${props.report?.textClassifier}`}
+            max={10}
+          />
+          <Phrases>
+            Wynik fraz:
+            {props.report?.phrases ? <FaCheckCircle /> : <FaTimesCircle />}
+          </Phrases>
         </StatsWrapper>
       </ModalBody>
 

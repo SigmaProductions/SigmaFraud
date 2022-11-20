@@ -7,4 +7,6 @@ export interface Report {
     text: string;
     state: string;
     mediaUrl: string;
+    textClassifier: number;
+    phrases: boolean;
 }

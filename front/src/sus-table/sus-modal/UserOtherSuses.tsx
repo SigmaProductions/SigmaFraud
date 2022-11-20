@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { Report } from "../../models/Report";
 import { fetchReportsByUser } from "../../services/reports.service";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaSkullCrossbones } from "react-icons/fa";
 
 type Props = { userId: string; currentId: string };
 
@@ -30,7 +30,7 @@ export default function UserOtherSuses({ userId, currentId }: Props) {
             return (
               <tr>
                 <td>{r.dateCreated}</td>
-                <td>{r.state === "sus" && <FaCheckCircle />}</td>
+                <td>{r.state === "sus" && <FaSkullCrossbones />}</td>
               </tr>
             );
           })}

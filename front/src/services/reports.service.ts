@@ -36,11 +36,33 @@ export async function fetchReportsByUser(userId: string) {
     return mapJson(ඞ)
 }
 
+export async function getDistribution() {
+    let response = await fetch(api_url + '/susposts/distribution', {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    });
+
+    return await response.json();
+}
+
+export async function startTraining() {
+    return await fetch(api_url + 'training', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    });
+
+}
+
 function getFormData(object: any) {
     const formData = new FormData();
     Object.keys(object).forEach(key => formData.append(key, object[key]));
     return formData;
 }
+
 
 function mapJson(json: any) {
     return json.map((rep: any) => (
@@ -51,7 +73,10 @@ function mapJson(json: any) {
             authorId: rep.author_id,
             state: rep.state,
             text: rep.text,
-            mediaUrl: rep.media_url
+            mediaUrl: rep.media_url,
+            dateCreated: rep.created_at,
+            textClassifier: rep.text_classification,
+            phrases: rep.contains_malicious_phrases
         } as Report)) as Report[];
 
 }
