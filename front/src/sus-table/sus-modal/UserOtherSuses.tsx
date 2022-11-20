@@ -17,7 +17,7 @@ export default function UserOtherSuses({ userId, currentId }: Props) {
 
   return (
     <>
-      <h4>Poprzednio zsusowane posty użytkownika:</h4>
+      <h4>Poprzednio oznaczone posty użytkownika:</h4>
       <Table striped bordered hover>
         <thead>
           <tr>

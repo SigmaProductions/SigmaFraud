@@ -7,12 +7,11 @@ type Props = {};
 
 export default function MlModel({}: Props) {
   const Wrapper = styled.div`
-    gap: 6px;
+    gap: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 80%;
   `;
   const [trainState, setTrainState] = useState(false);
 
@@ -23,6 +22,9 @@ export default function MlModel({}: Props) {
       setTrainState(true);
     }
   };
+  const Json = styled.span`
+    margin: 1rem;
+  `;
 
   const [metrics, setMetrics] = useState<any>();
   useEffect(() => {
@@ -30,13 +32,16 @@ export default function MlModel({}: Props) {
   }, []);
 
   const MetricsCard = styled(Card)`
-    margin-top: 5rem;
+    display: flex;
   `;
 
   const P = styled.p`
     margin-top: 2rem;
   `;
   const F1 = styled.h2`
+    color: red;
+  `;
+  const F2 = styled.h3`
     color: red;
   `;
   return (
@@ -53,9 +58,19 @@ export default function MlModel({}: Props) {
             {metrics &&
               metrics.customSingleLabelClassificationEvaluation.macroF1}
           </F1>
+          <h3>Wskażnik precyzji macro precision</h3>
+          <F2>
+            {metrics &&
+              metrics.customSingleLabelClassificationEvaluation.macroPrecision}
+          </F2>
+          <h3>Wskażnik precyzji precision recall</h3>
+          <F2>
+            {metrics &&
+              metrics.customSingleLabelClassificationEvaluation.macroRecall}
+          </F2>
         </P>
         <h2>Obecne Parametry</h2>
-        {metrics && JSON.stringify(metrics, null, 2)}
+        <Json>{metrics && JSON.stringify(metrics, null, 2)}</Json>
       </MetricsCard>
     </Wrapper>
   );

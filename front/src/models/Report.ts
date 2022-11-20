@@ -9,4 +9,5 @@ export interface Report {
     mediaUrl: string;
     textClassifier: number;
     phrases: boolean;
+    brands: string[];
 }

@@ -85,7 +85,8 @@ function mapJson(json: any) {
             mediaUrl: rep.media_url,
             dateCreated: rep.created_at,
             textClassifier: rep.text_classification,
-            phrases: rep.contains_malicious_phrases
+            phrases: rep.contains_malicious_phrases,
+            brands: rep.brands ?? []
         } as Report)) as Report[];
 
 }

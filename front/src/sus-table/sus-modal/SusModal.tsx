@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, Card, Modal, ProgressBar } from "react-bootstrap";
+import { Button, Card, ListGroup, Modal, ProgressBar } from "react-bootstrap";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import styled from "styled-components";
+import { isPropertySignature } from "typescript";
 import { Report } from "../../models/Report";
 import UserOtherSuses from "./UserOtherSuses";
 
@@ -93,8 +94,11 @@ export default function SusModal(props: {
             <UserName>{props.report?.authorName} </UserName>
             <UserId>#{props.report?.authorId}</UserId>
           </UserBar>
-          {props.report?.mediaUrl && (
+          {/* {props.report?.mediaUrl && (
             <ReportMediaContent src={props.report?.mediaUrl} alt="avatar" />
+          )} */}
+          {props.report?.mediaUrl && (
+            <ReportMediaContent src="/Untitled.png" alt="avatar" />
           )}
           <ReportContent>{props.report?.text}</ReportContent>
         </ReportWrapper>
@@ -119,6 +123,22 @@ export default function SusModal(props: {
             Wynik fraz:
             {props.report?.phrases ? <FaCheckCircle /> : <FaTimesCircle />}
           </Phrases>
+        </StatsWrapper>
+        <StatsWrapper>
+          Detekcja podmiotów:
+          {props.report?.brands?.length > 0 && (
+            <ListGroup>
+              {props.report?.brands &&
+                props.report.brands.map((b) => (
+                  <ListGroup.Item>b</ListGroup.Item>
+                ))}
+            </ListGroup>
+          )}
+          {(props.report?.brands?.length === 0 || props.report?.brands == null)&& (
+            <span>
+              Nie znaleziono żadnych podmiotów lub ten tweet nie ma obrazów.
+            </span>
+          )}
         </StatsWrapper>
       </ModalBody>
 
