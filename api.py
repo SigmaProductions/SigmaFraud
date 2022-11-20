@@ -26,6 +26,14 @@ def get_all_sus_posts():
         result['_id'] = str(result['_id'])
     return results
 
+@app.route("/susposts/users/<user_id>")
+def get_user_sus_posts(user_id):
+    results = list(mongo.db.posts.find({'author_id': user_id}))
+    for result in results:
+        result['_id'] = str(result['_id'])
+    return results
+
+
 @app.route("/changestate", methods = ['POST'])
 def set_post_state():
     postId = request.form.get('id')

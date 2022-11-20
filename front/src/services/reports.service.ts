@@ -1,12 +1,57 @@
+import { Report } from "../models/Report";
 
+const api_url = 'http://127.0.0.1:5000/'
 
-export function markReport(isSus: boolean, id: string) {
-    return fetch('https://jsonplaceholder.typicode.com/posts', {
+export function markReport(isSus: string, id: string) {
+    let formData = new FormData();
+    formData.append('id', id);
+    formData.append('state', isSus);
+
+    return fetch(api_url + '/changestate', {
         method: 'POST',
-        body: JSON.stringify({
-        }),
+        body: formData,
+    });
+}
+export async function fetchReports() {
+    let response = await fetch(api_url + '/susposts', {
+        method: 'GET',
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
         }
     });
+
+    let json = await response.json()
+
+    return mapJson(json);
+}
+
+export async function fetchReportsByUser(userId: string) {
+    let response = await fetch(api_url + `/susposts/users/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    });
+    let ඞ = await response.json()
+    return mapJson(ඞ)
+}
+
+function getFormData(object: any) {
+    const formData = new FormData();
+    Object.keys(object).forEach(key => formData.append(key, object[key]));
+    return formData;
+}
+
+function mapJson(json: any) {
+    return json.map((rep: any) => (
+        {
+            id: rep._id,
+            source: 'twitter',
+            authorName: rep.author_name,
+            authorId: rep.author_id,
+            state: rep.state,
+            text: rep.text,
+            mediaUrl: rep.media_url
+        } as Report)) as Report[];
+
 }
