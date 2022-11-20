@@ -1,0 +1,35 @@
+{
+    "projectFileVersion": "2022-11-20",
+    "stringIndexType": "Utf16CodeUnit",
+    "metadata": {
+      "projectName": "",
+      "storageInputContainerName": "example-data",
+      "projectKind": "CustomSingleLabelClassification",
+      "description": "Project for sus posts",
+      "language": "pl",
+      "multilingual": false,
+      "settings": {}
+    },
+    "assets": {
+      "projectKind": "CustomSingleLabelClassification",
+      "classes": [
+        {
+          "category": "sus"
+        },
+        {
+          "category": "non-sus"
+        }
+      ],
+      "documents": [
+        {
+            "location": "1.txt",
+            "language": "pl-pl",
+            "class":
+                {
+                "category": "sus"
+                }
+        }
+      ]
+    }
+  }
+  
