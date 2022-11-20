@@ -1,5 +1,5 @@
 class Tweet:
-    def __init__(self, text, id, state, created_at, author_id, author_name, media_url= None, text_classification = None, contains_malicious_phrases = None, ocr_info = None):
+    def __init__(self, text, id, state, created_at, author_id, author_name, media_url= None, text_classification = None, contains_malicious_phrases = None, ocr_info = None, brands = None):
         self.text = text
         self.id = id
         self.state = state
@@ -10,6 +10,7 @@ class Tweet:
         self.text_classification = text_classification
         self.contains_malicious_phrases = contains_malicious_phrases
         self.ocr_info = ocr_info
+        self.brands = brands
 
     def to_dict(self):
         return {
@@ -22,5 +23,6 @@ class Tweet:
             "text_classification": self.text_classification,
             "contains_malicious_phrases": self.contains_malicious_phrases,
             "ocr_info": self.ocr_info,
-            "media_url": self.media_url
+            "media_url": self.media_url,
+            "brands": self.brands
             }
