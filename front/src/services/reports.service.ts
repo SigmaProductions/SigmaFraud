@@ -54,6 +54,15 @@ export async function startTraining() {
             'Content-type': 'application/json; charset=UTF-8',
         }
     });
+}
+
+export function getTrainingMetrics() {
+    return fetch(api_url + 'training/metrics', {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        }
+    }).then(res => res.json());
 
 }
 

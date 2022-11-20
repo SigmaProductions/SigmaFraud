@@ -13,7 +13,6 @@ export default function Dashboard() {
     fetchReports()
       .then((res) => setReports(res))
       .catch((e) => {
-        alert("something went horribly wrong");
       });
   }, []);
 

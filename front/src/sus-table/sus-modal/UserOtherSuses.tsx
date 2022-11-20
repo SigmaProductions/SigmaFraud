@@ -9,7 +9,7 @@ type Props = { userId: string; currentId: string };
 export default function UserOtherSuses({ userId, currentId }: Props) {
   useEffect(() => {
     let req = fetchReportsByUser(userId);
-    req.catch((e) => alert("Something went wrong"));
+    req.catch((e) => {});
     req.then((res) => setReports(res.filter((r) => r.id !== currentId)));
   }, []);
 

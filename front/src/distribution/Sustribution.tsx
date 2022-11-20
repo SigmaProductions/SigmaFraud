@@ -30,7 +30,7 @@ export default function Sustribution({}: Props) {
 
   useEffect(() => {
     let req = getDistribution();
-    req.catch((e) => alert("Something went wrong"));
+    req.catch((e) => {});
     req.then((res) => setDistribution(res));
   }, []);
 

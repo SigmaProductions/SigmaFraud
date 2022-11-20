@@ -124,10 +124,10 @@ export default function SusModal(props: {
 
       <Footer>
         <Button variant="danger" onClick={() => markReport(true)}>
-          Fraudulant
+          Oznacz jako oszustwo
         </Button>
         <Button variant="success" onClick={() => markReport(false)}>
-          Safe
+          Oznacz jako fałszywy pozytyw
         </Button>
       </Footer>
     </Modal>
