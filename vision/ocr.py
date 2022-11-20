@@ -4,32 +4,40 @@ from azure.cognitiveservices.vision.computervision.models import VisualFeatureTy
 from msrest.authentication import CognitiveServicesCredentials
 import time
 import os
+import numpy as np
 
-key = os.environ["VISION_API_SECRET"]
-endpoint="https://sigmafraudvision.cognitiveservices.azure.com/"
+from tweet import Tweet
 
-test_url="https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/cognitive-services/Computer-vision/Images/readsample.jpg"
+class Ocr():
+    def __init__(self) -> None:
+        self.key = ''
+        self.endpoint="https://sigmafraudvision.cognitiveservices.azure.com/"
+        self.computervision_client = ComputerVisionClient(self.endpoint, CognitiveServicesCredentials(self.key))
 
-computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(key))
+
+    def _ocr(self, image_url):
+        read_response = self.computervision_client.read(image_url, language='pl',  raw=True)
+        read_operation_location = read_response.headers["Operation-Location"]
+        # Grab the ID from the URL
+        operation_id = read_operation_location.split("/")[-1]
+
+        while True:
+            read_result = self.computervision_client.get_read_result(operation_id)
+            if read_result.status not in ['notStarted', 'running']:
+                break
+            time.sleep(1)
+        if read_result.status == OperationStatusCodes.succeeded:
+            return read_result.analyze_result.read_results
 
 
-def ocr(image_url):
-    read_response = computervision_client.read(image_url, language='pl',  raw=True)
-    read_operation_location = read_response.headers["Operation-Location"]
-    # Grab the ID from the URL
-    operation_id = read_operation_location.split("/")[-1]
-
-    while True:
-        read_result = computervision_client.get_read_result(operation_id)
-        if read_result.status not in ['notStarted', 'running']:
-            break
-        time.sleep(1)
-    if read_result.status == OperationStatusCodes.succeeded:
-        return read_result.analyze_result.read_results
-
-res= ocr(test_url)
-for text_result in res:
-    for line in text_result.lines:
-        print(line)
+    def check_tweet_image(self, tweet: Tweet):
+        if tweet.media_url is not None:
+            res= self._ocr(tweet.media_url)
+            for text_result in res:
+                for line in text_result.lines:
+                    if line.bounding_box is not None:
+                        print(line.bounding_box)
+                        tweet.ocr_info['bounding_box'] = np.array2string(line.bounding_box)
+                        tweet.ocr_info['text'] = line.text
 
 

@@ -36,6 +36,7 @@ class BagOfWords():
         vector_tweet_input = self.vectorizer.transform([tweet.text])
 
         result = self.classifier.predict(vector_tweet_input)
+        tweet.text_classification = result[0].astype(str)
         if result > 0.5:
             return True
         return False
