@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import date, timedelta
+import datetime
 from flask import Flask
 from flask_pymongo import PyMongo
 import twitter as ts
@@ -16,7 +17,7 @@ list_of_tweets = ts.getRecentTweets("NBP")
 for tweet in list_of_tweets:
     prediction = pipeline.pipeline(tweet)
     if prediction == True:
-        tweet.state = 'sus'
+        tweet.state = None
         mongo.db.posts.insert_one(tweet.to_dict())
 
 
@@ -43,8 +44,10 @@ def set_post_state():
     return {}
 
 @app.route("/susposts/distribution")
-def get_user_sus_posts(user_id):
-    results = mongo.db.posts.find({'created_at': {'$regex': date.today.__str__}}).count()
-    for result in results:
-        result['_id'] = str(result['_id'])
+def get_sustribution():
+    results=[]
+    for i in range(0,30):
+        day= datetime.datetime.now() - timedelta(i)
+        day=datetime.datetime.strftime(day, '%Y-%m-%d')
+        results.append( len(list(mongo.db.posts.find({'created_at': {'$regex': day.__str__()}}))))
     return results
