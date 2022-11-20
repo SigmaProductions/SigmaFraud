@@ -4,7 +4,6 @@ import database as db
 
 
 if __name__ == '__main__':
-
     list_of_tweets = ts.getRecentTweets("sztuka")
     for tweet in list_of_tweets:
         prediction = pipeline.pipeline(tweet)

@@ -1,8 +1,10 @@
 from tweet import Tweet
-
+from models.bag_of_words_training import BagOfWords
 
 def pipeline(tweet: Tweet):
-    return _bag_of_words(tweet.text)
+    some = BagOfWords()
+    return some.is_scammy_text(tweet.text) or phrase_detection(tweet.text)
 
-def _bag_of_words(tweet_text: str):
+def phrase_detection(tweet_text: str):
     return True
+
