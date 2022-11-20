@@ -1,29 +1,33 @@
 import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
+import styled from "styled-components";
 import { Report } from "../models/Report";
-import { markReport } from "../services/reports.service";
-import MarkedToast from "./MarkedToast";
 import SusModal from "./sus-modal/SusModal";
 
-export default function SusTable({ data }: { data: Report[] }) {
+export default function SusTable({
+  data,
+  reportChange,
+}: {
+  data: Report[];
+  reportChange: (rep: Report) => void;
+}) {
   const [showModal, setShowModal] = useState<{
     data: Report | undefined;
     show: boolean;
   }>({ data: undefined, show: false });
 
-  const [toast, setToast] = useState<{
-    variant: "Success" | "Danger";
-    onClose: () => void;
-  }>();
-
   const rowClicked = (rowData: Report) =>
     setShowModal({ data: rowData, show: true });
 
-  const showToast = (isSuccess: boolean) =>
-    setToast({
-      variant: isSuccess ? "Success" : "Danger",
-      onClose: () => setToast(undefined),
-    });
+  const ReportText = styled.td`
+    word-wrap: break-word;
+    max-height: 2rem;
+    overflow: hidden;
+    word-wrap: ;
+  `;
+  const SusMarker = styled.td`
+    font-size: 2rem;
+  `;
 
   return (
     <>
@@ -31,6 +35,7 @@ export default function SusTable({ data }: { data: Report[] }) {
         <thead>
           <tr>
             <th>Source</th>
+            <th>Text</th>
             <th>Is sus</th>
           </tr>
         </thead>
@@ -39,7 +44,13 @@ export default function SusTable({ data }: { data: Report[] }) {
             return (
               <tr onClick={() => rowClicked(r)}>
                 <td>{r.source}</td>
-                <td>{r.sus}</td>
+                <ReportText>{r.text}</ReportText>
+                <SusMarker>
+                  {r.state === "sus"
+                    ? "ඞ"
+                    : data.filter((r) => r.state === "sus").length +
+                      " Impostor remains "}
+                </SusMarker>
               </tr>
             );
           })}
@@ -51,17 +62,15 @@ export default function SusTable({ data }: { data: Report[] }) {
           show: showModal.show,
           onClose: async (wasSus: boolean | undefined) => {
             if (wasSus !== undefined) {
-              let res = await markReport(wasSus, showModal.data!.id);
-
-              if (res.ok) showToast(true);
-              else showToast(false);
+              let report = showModal.data!;
+              report.state = wasSus ? "sus" : "non-sus";
+              await reportChange(report);
+              // await markOnModalClose(wasSus, showModal.data!);
             }
-
             setShowModal({ data: undefined, show: false });
           },
         }}
       ></SusModal>
-      {toast && <MarkedToast {...toast!} />}
     </>
   );
 }

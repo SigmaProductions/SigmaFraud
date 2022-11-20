@@ -15,12 +15,22 @@ export default function MarkedToast({ variant, onClose }: Props) {
     right: 1rem;
   `;
   return (
-    <ToastStyled bg={variant}>
+    <ToastStyled
+      bg={variant.toLowerCase()}
+      animation={true}
+      delay={3000}
+      autohide
+    >
       <Toast.Header onClick={onClose}>
-        <strong className="me-auto"></strong>
-        <small>11 mins ago</small>
+        <strong className="me-auto">
+          {variant === "Success" ? "Success" : "Error"}
+        </strong>
       </Toast.Header>
-      <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
+      <Toast.Body>
+        {variant === "Success"
+          ? "Successfuly saved changes"
+          : "Error has occured"}
+      </Toast.Body>
     </ToastStyled>
   );
 }
