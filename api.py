@@ -1,3 +1,4 @@
+from datetime import date
 from flask import Flask
 from flask_pymongo import PyMongo
 import twitter as ts
@@ -40,3 +41,10 @@ def set_post_state():
     state = request.form.get('state')
     mongo.db.posts.update_one({"_id" : ObjectId(postId)}, {"$set": {'state': state}})
     return {}
+
+@app.route("/susposts/distribution")
+def get_user_sus_posts(user_id):
+    results = mongo.db.posts.find({'created_at': {'$regex': date.today.__str__}}).count()
+    for result in results:
+        result['_id'] = str(result['_id'])
+    return results
