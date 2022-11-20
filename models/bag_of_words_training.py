@@ -7,9 +7,8 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
 class BagOfWords():
     def __init__(self) -> None:
-        super().__init__()
-        self.classifier
-        self.vectorizer
+        self.vectorizer = None
+        self.classifier = None
         dfScam = pd.read_csv("models/inputScam.csv")
         dfNoScam = pd.read_csv("models/twitterNoScam.csv")
         dfNoScam['scam'] = 0
@@ -18,12 +17,12 @@ class BagOfWords():
         mainDf['text'] = mainDf['text'].apply(lambda x: self._remove_punctuation(x))
         mainDf['text']= mainDf['text'].apply(lambda x: x.lower())
         y = mainDf['scam']
-        vectorizer = CountVectorizer()
-        vectorizer = vectorizer.fit(mainDf['text'])
-        vectors = vectorizer.transform(mainDf['text'])
+        self.vectorizer = CountVectorizer()
+        self.vectorizer = self.vectorizer.fit(mainDf['text'])
+        vectors = self.vectorizer.transform(mainDf['text'])
         X_train, X_test, y_train, y_test = train_test_split(vectors, y, shuffle=True, test_size=0.2, random_state=1)
-        classifier = DecisionTreeClassifier(max_depth=8)
-        classifier = classifier.fit(X_train, y_train)
+        self.classifier = DecisionTreeClassifier(max_depth=8)
+        self.classifier = self.classifier.fit(X_train, y_train)
 
     def _remove_punctuation(self, text):
         punctuationfree="".join([i for i in text if i not in string.punctuation])
